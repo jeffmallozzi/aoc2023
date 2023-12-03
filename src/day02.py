@@ -7,23 +7,19 @@ Default_log_level = logging.WARNING
 DAY = 2
 
 # 12 red cubes, 13 green cubes, and 14 blue cubes
-bag = {
-    "red" : 12,
-    "green" : 13,
-    "blue" : 14
-}
+bag = {"red": 12, "green": 13, "blue": 14}
 
 parser = argparse.ArgumentParser(
-    prog=f'Advent of Code 2023: day {DAY}',
-    description='What the program does',
-    epilog='Text at the bottom of help'
+    prog=f"Advent of Code 2023: day {DAY}",
+    description="What the program does",
+    epilog="Text at the bottom of help",
 )
-parser.add_argument('filename')
-parser.add_argument('-v', '--verbose', action='count', default=0)
+parser.add_argument("filename")
+parser.add_argument("-v", "--verbose", action="count", default=0)
 
 args = parser.parse_args()
-    
-log_level = max((0,Default_log_level - (args.verbose * 10)))
+
+log_level = max((0, Default_log_level - (args.verbose * 10)))
 logging.basicConfig(level=log_level)
 logger = logging.getLogger(__name__)
 
@@ -45,8 +41,10 @@ def part_one(f):
                 if int(color[0]) > bag.get(color[1]):
                     possible = False
                     break
-            if not possible: break
-        if possible: id_sum += id
+            if not possible:
+                break
+        if possible:
+            id_sum += id
 
     return id_sum
 
@@ -58,11 +56,7 @@ def part_two(f):
         logger.debug(game)
         game = game.split(":")
         hands = game[1].split(";")
-        min_cubes = {
-            "red" : 0,
-            "green" : 0,
-            "blue" : 0
-        }
+        min_cubes = {"red": 0, "green": 0, "blue": 0}
         for hand in hands:
             logger.debug(hand)
             cubes_by_color = hand.split(",")
@@ -70,20 +64,13 @@ def part_two(f):
                 logger.debug(color)
                 color = color.split()
                 logger.debug(color)
-                min_cubes[color[1]] = max(
-                    (
-                        min_cubes.get(color[1]),
-                        int(color[0])
-                    )
-                )
+                min_cubes[color[1]] = max((min_cubes.get(color[1]), int(color[0])))
         power_sum += prod(min_cubes.values())
 
-    return power_sum 
+    return power_sum
 
 
 def main():
-    
-
     with open(args.filename, "r") as f:
         print(f"Part 1: {part_one(f)}")
         f.seek(0)
