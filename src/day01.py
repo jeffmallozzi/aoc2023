@@ -11,8 +11,8 @@ logger.level = logging.DEBUG
 DAY = 1
 
 parser = argparse.ArgumentParser(
-    prog=f'Advent of Code 2023: day {DAY}',
-    description='https://adventofcode.com/2023/day/1',
+    prog= "python day01.py",
+    description=f'Advent of Code 2023: day {DAY}\nhttps://adventofcode.com/2023/day/1',
     epilog='Text at the bottom of help'
 )
 parser.add_argument('filename')
