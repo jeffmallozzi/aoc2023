@@ -28,7 +28,6 @@ def part_two(f):
 
 
 def main():
-
     with open(args.filename, "r") as f:
         print(f"Part 1: {part_one(f)}")
         f.seek(0)

@@ -23,6 +23,7 @@ times = []
 distances = []
 winning_times = []
 
+
 def part_one():
     for time, distance in zip(times, distances):
         winners = 0
@@ -38,16 +39,14 @@ def part_two():
     time = int("".join([str(x) for x in times]))
     distance = int("".join([str(x) for x in distances]))
 
-    return sum([1 for speed in range(time)
-                if speed * (time - speed) > distance])
+    return sum([1 for speed in range(time) if speed * (time - speed) > distance])
 
 
 def main():
-
     with open(args.filename, "r") as f:
         times.extend([int(x) for x in f.readline().split(":")[-1].split()])
         distances.extend([int(x) for x in f.readline().split(":")[-1].split()])
-    
+
     print(f"Part 1: {part_one()}")
     print(f"Part 2: {part_two()}")
 

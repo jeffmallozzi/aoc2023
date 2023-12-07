@@ -22,21 +22,24 @@ logger = logging.getLogger(__name__)
 seeds = []
 maps = {}
 
+
 def batched(iterable, n):
     # batched('ABCDEFG', 3) --> ABC DEF G
     if n < 1:
-        raise ValueError('n must be at least one')
+        raise ValueError("n must be at least one")
     it = iter(iterable)
     while batch := tuple(islice(it, n)):
         yield batch
+
 
 def get_from_map(item, map):
     for row in map:
         if row[1] <= item <= (row[1] + row[2]):
             logger.debug(f"{item=} {row=}")
             return row[0] + (item - row[1])
-    
+
     return item
+
 
 def get_ranges_from_map(ranges, map):
     result = []
@@ -53,32 +56,27 @@ def get_ranges_from_map(ranges, map):
             dest_end = row[0] + (row[2] - 1)
             if source_start <= item_start <= item_end <= source_end:
                 logger.debug(f"Items fully within: {row=} {item_range=}")
-                result.append((
-                    dest_start + (item_start - source_start),
-                    item_range[1]
-                ))
-                
+                result.append((dest_start + (item_start - source_start), item_range[1]))
+
                 break
             elif item_start < source_start <= source_end < item_end:
                 logger.debug(f"Items fully overlap: {row=} {item_range=}")
-                result.append((
-                    dest_start, row[2]
-                ))
+                result.append((dest_start, row[2]))
                 result.extend(
-                    get_ranges_from_map([(item_start, source_start-item_start),
-                                         (source_end +1, item_end - source_end)], map)
+                    get_ranges_from_map(
+                        [
+                            (item_start, source_start - item_start),
+                            (source_end + 1, item_end - source_end),
+                        ],
+                        map,
+                    )
                 )
                 break
             elif item_start < source_start <= item_end <= source_end:
                 logger.debug(f"Items overlap left: {row=} {item_range=}")
-                result.append(
-                    (dest_start, item_end - (source_start - 1))
-                )
+                result.append((dest_start, item_end - (source_start - 1)))
                 result.extend(
-                    get_ranges_from_map(
-                        [(item_start, source_start - item_start)],
-                        map
-                    )
+                    get_ranges_from_map([(item_start, source_start - item_start)], map)
                 )
                 break
             elif source_start <= item_start < source_end < item_end:
@@ -87,17 +85,13 @@ def get_ranges_from_map(ranges, map):
                     (dest_start + (item_start - source_start), source_end - item_start)
                 )
                 result.extend(
-                    get_ranges_from_map(
-                        [(source_end + 1, item_end - source_end)],
-                        map
-                    )
+                    get_ranges_from_map([(source_end + 1, item_end - source_end)], map)
                 )
                 break
         else:
             result.append(item_range)
 
     return result
-
 
 
 def part_one():
@@ -124,6 +118,7 @@ def part_one():
     logger.debug(f"{locations=}")
     return min(locations)
 
+
 def part_two():
     seed_ranges = list(batched(seeds, 2))
     logger.debug(f"{seed_ranges=}")
@@ -141,14 +136,11 @@ def part_two():
     logger.debug(f"{humidity=}")
     locations = get_ranges_from_map(humidity, maps["humidity-to-location map"])
     logger.debug(f"{locations=}")
-    
+
     return min([x[0] for x in locations])
 
 
-
-
 def main():
-
     with open(args.filename, "r") as f:
         seeds.extend(int(x) for x in f.readline().split(":")[-1].split())
         logger.debug(seeds)
