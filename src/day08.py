@@ -25,7 +25,7 @@ maps = {}
 
 def part_one():
     location = "AAA"
-    for steps, direction in enumerate(cycle(directions)):
+    for steps, direction in enumerate(cycle(directions), start=1):
         location = maps[location][direction]
         if location = "ZZZ": return steps
         
