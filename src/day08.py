@@ -1,5 +1,6 @@
 import argparse
 import logging
+from itertools import cycle
 
 Default_log_level = logging.WARNING
 
@@ -22,11 +23,15 @@ directions = []
 
 maps = {}
 
-def part_one(f):
-    pass
+def part_one():
+    location = "AAAA"
+    for steps, direction in enumerate(cycle(directions)):
+        location = maps[location][direction]
+        if location = "ZZZZ": return steps
+        
 
 
-def part_two(f):
+def part_two():
     pass
 
 
