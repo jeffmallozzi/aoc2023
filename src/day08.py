@@ -24,10 +24,10 @@ directions = []
 maps = {}
 
 def part_one():
-    location = "AAAA"
+    location = "AAA"
     for steps, direction in enumerate(cycle(directions)):
         location = maps[location][direction]
-        if location = "ZZZZ": return steps
+        if location = "ZZZ": return steps
         
 
 
